@@ -1,0 +1,76 @@
+<dependency>
+    <groupId>com.sun.mail</groupId>
+    <artifactId>javax.mail</artifactId>
+    <version>1.6.2</version>
+</dependency>
+
+<dependency>
+    <groupId>javax.activation</groupId>
+    <artifactId>activation</artifactId>
+    <version>1.1.1</version>
+</dependency>
+
+
+
+
+package com.mailsend.mailsend;
+import java.util.Properties;
+import java.util.Scanner;
+
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+public class App 
+{
+    public static void main( String[] args )
+    {
+    	Scanner s=new Scanner(System.in);
+    	System.out.println("Enter the message: ");
+    	String msg=s.nextLine();
+    	System.out.println("Enter the subject: ");
+    	String obj=s.nextLine();
+    	System.out.println("Enter the recipient mail: ");
+    	String to=s.nextLine();
+    	System.out.println("Enter your mailId: ");
+    	String from=s.nextLine();
+    	
+    	
+       App.sendMail(msg,obj,to,from);
+    }
+    public static void sendMail(String msg, String obj, String to, String from)
+    {
+    	Properties prop=System.getProperties();
+    	prop.put("mail.smtp.host","smtp.gmail.com");
+    	prop.put("mail.smtp.port", "465");
+    	prop.put("mail.smtp.port", "465");
+    	prop.put("mail.smtp.ssl.enable", "true");
+    	prop.put("mail.smtp.auth", "true");
+    	
+    	Session session=Session.getInstance(prop,new Authenticator() {
+
+			@Override
+			protected PasswordAuthentication getPasswordAuthentication() {
+				
+				return new PasswordAuthentication("dewangupadhyay23@gmail.com","dzij zcnf jcwj qvpt");
+			}
+		});
+    	
+    	MimeMessage m=new MimeMessage(session);
+    	try
+    	{
+    		
+    		m.setFrom(from);
+    		m.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
+    		m.setSubject(obj);
+    		m.setText(msg);
+    		
+    		Transport.send(m);
+    		System.out.println("Email send successfully");
+    		
+    	}catch(Exception e)
+    	{
+    		System.out.print(e);
+    	}
+    }
+}
